@@ -13,6 +13,15 @@ class MySQLConfigTest extends TestCase
         $this->config = new MySQLConfig();
     }
 
+    public function testConstructorParameters()
+    {
+        $config = new MySQLConfig('username', 'password', ['options']);
+
+        $this->assertSame('username', $config->getUsername());
+        $this->assertSame('password', $config->getPassword());
+        $this->assertSame(['options'], $config->getOptions());
+    }
+
     public function testDSNWithHostAndPort()
     {
         $this->config->setHost('127.0.0.1');
