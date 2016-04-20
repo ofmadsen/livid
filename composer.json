@@ -1,8 +1,8 @@
 {
     "name": "ofmadsen/livid",
     "type": "library",
-    "description": "Mini Data Mapper ORM for PHP",
-    "keywords": ["orm", "datamapper"],
+    "description": "Data Mapper (ORM) for PHP",
+    "keywords": ["orm", "datamapper", "database"],
     "homepage": "https://github.com/ofmadsen/livid",
     "license": "MIT",
     "authors": [
