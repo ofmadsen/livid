@@ -50,6 +50,7 @@ class Query
      */
     public function get($entity = Entity::class)
     {
+        $this->execute();
         $entities = $this->fetch($entity);
 
         if (count($entities) > 1) {
@@ -68,6 +69,7 @@ class Query
      */
     public function all($entity = Entity::class)
     {
+        $this->execute();
         return $this->fetch($entity);
     }
 
@@ -78,15 +80,14 @@ class Query
      */
     public function scalar()
     {
-        return $this->execute()->fetchColumn();
+        $this->execute();
+        return $this->statement->fetchColumn();
     }
 
     /**
      * Bind parameters and execute the statement.
      *
      * @throws DatabaseQueryFailed
-     *
-     * @return PDOStatement
      */
     private function execute()
     {
@@ -99,8 +100,6 @@ class Query
         } catch (PDOException $exception) {
             throw new DatabaseQueryFailed($exception->getMessage());
         }
-
-        return $this->statement;
     }
 
     /**
@@ -112,7 +111,6 @@ class Query
      */
     private function fetch($entity)
     {
-        $this->execute();
         $factory = new EntityFactory($entity);
 
         $entities = [];
