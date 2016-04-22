@@ -14,7 +14,7 @@ $ composer require ofmadsen/livid
 
 ## Features
 - Uses `PDO` as database driver (supporting multiple database types)
-- Support connection to multiple databases (same and/or different types)
+- Support connections to multiple databases (same and/or different types)
 - Lazy-load connection to the database (connect when queried)
 - Query result with single, all or scalar values
 - Automatic conversion of column snake case naming to entity property camel case naming
@@ -48,14 +48,14 @@ class ExampleMapper extends Livid\Mapper
     }
 }
 
-// Assuming that table examples contain a row with id = 1
+// Assuming the examples table contain a row with id = 1
 $mapper = new ExampleMapper();
 $entity = $mapper->get(1);
 
 // Will echo Livid\Entity as no entity object was specified in the Query::get method
 echo get_class($entity);
 ```
-Note that [`Livid\Mapper`](src/Livid/Mapper.php) do not define a constructor and mappers are free to have anything injected. Injecting mappers into other classes are relatively cheap as the connection to the database are not established until needed.
+Note that [`Livid\Mapper`](src/Livid/Mapper.php) do not define a constructor method and mappers are therefore free to have anything injected. Injecting mappers into other classes are relatively cheap as the connection to the database are not established until needed and reused across mappers.
 
 ## Fetch data in defined entities
 Livid support entities with public, protected and private properties. The naming convention for entity properties in Livid is camel case and as such any column name that contains underscore are converted.
@@ -84,14 +84,14 @@ class ExampleMapper extends Livid\Mapper
 {
     public function get($id)
     {
-        // Note that the database column is using snake case
+        // Note that the database column name is in snake case form
         $sql = 'SELECT id, example_text
                 FROM examples
                 WHERE id = :id';
 
         $parameters = ['id' => $id];
 
-        // Note that the query object's get method get call with reference to the Example class
+        // Note that the get method on the query object is called with a reference to the Example class
         return $this->query($sql, $parameters)->get(Example::class)
     }
 }
@@ -105,7 +105,7 @@ echo $example->getExampleText();
 As entities are simple container objects they can contain whatever methods and logic that suits the needs of the application.
 
 ## Use multiple databases
-Livid supports connections to multiple databases. Setting the database without a name will use the default name. The mappers must define the database name by overwriting the constant `DATABASE` if they do not use the default one.
+Livid supports connections to multiple databases. Setting the database without a name will use the default name. Mappers that uses non-default databases must define the constant `DATABASE` containing the name that the database was set with.
 ```php
 <?php
 
@@ -120,7 +120,7 @@ class ExampleLoggerMapper extends Livid\Mapper
 }
 ```
 
-If multiple mappers uses the non-default database it might be easier to maintain if they extend on a common class that defines the database name.
+If multiple mappers uses the non-default database it might be easier to maintain if they extend a common class that defines the database name.
 
 ```php
 <?php
