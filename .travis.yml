@@ -5,7 +5,6 @@ php:
 
 install:
   - composer install
-  - composer require satooshi/php-coveralls
   - composer require codacy/coverage
 
 before_script:
@@ -15,5 +14,4 @@ script:
   - phpunit --coverage-clover build/logs/clover.xml
 
 after_success:
-  - php vendor/bin/coveralls -v
   - php vendor/bin/codacycoverage
