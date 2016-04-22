@@ -6,6 +6,7 @@ php:
 install:
   - composer install
   - composer require satooshi/php-coveralls
+  - composer require codacy/coverage
 
 before_script:
   - mkdir -p build/logs
@@ -15,3 +16,4 @@ script:
 
 after_success:
   - php vendor/bin/coveralls -v
+  - php vendor/bin/codacycoverage
