@@ -95,7 +95,7 @@ class EntityFactory
      */
     private function createColumnMap(array $set)
     {
-        foreach ($set as $column => $value) {
+        foreach (array_keys($set) as $column) {
             $renamed = $this->toCamelCase($column);
 
             if (in_array($renamed, $this->protectedEntityProperties)) {
