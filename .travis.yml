@@ -14,4 +14,4 @@ script:
   - phpunit --coverage-clover build/logs/clover.xml
 
 after_success:
-  - php vendor/bin/codacycoverage
+  - php vendor/bin/codacycoverage clover
