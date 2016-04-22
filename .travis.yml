@@ -3,5 +3,15 @@ php:
 - 5.6
 - 7.0
 
-install: composer install
-script: composer test
+install:
+  - composer install
+  - composer require satooshi/php-coveralls
+
+before_script:
+  - mkdir -p build/logs
+
+script:
+  - phpunit tests/ --coverage-clover build/logs/clover.xml --whitelist src/
+
+after_success:
+  - php vendor/bin/coveralls -v
