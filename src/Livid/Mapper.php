@@ -68,7 +68,7 @@ abstract class Mapper
      */
     private function getDatabase()
     {
-        if (!array_key_exists(static::DATABASE, self::$databases)) {
+        if (!isset(self::$databases[static::DATABASE])) {
             throw new UndefinedDatabase(static::DATABASE);
         }
 
