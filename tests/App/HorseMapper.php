@@ -65,13 +65,46 @@ class HorseMapper extends Mapper
         return $this->execute($sql);
     }
 
-    public function sqlSyntaxFailure()
+    public function executePrepared()
+    {
+        $sql = 'INSERT INTO horses (
+                    "id",
+                    "stable_id",
+                    "name"
+                ) VALUES (
+                    :id,
+                    :stableId,
+                    :name
+                )';
+
+        $parameters = [
+            'id' => 4,
+            'stableId' => 1,
+            'name' => 'Frank'
+        ];
+
+        return $this->query($sql, $parameters)->execute();
+    }
+
+    public function sqlQuerySyntaxFailure()
     {
         return $this->query('SQL')->get();
     }
 
+    public function sqlExecuteSyntaxFailure()
+    {
+        return $this->execute('SQL');
+    }
+
     public function illegalParameterFailure()
     {
-        return $this->query('SELECT * FROM horses', ['horse' => true])->get(Horse::class);
+        $sql = 'SELECT *
+                FROM horses';
+
+        $parameters = [
+            'horse' => true
+        ];
+
+        return $this->query($sql, $parameters)->get(Horse::class);
     }
 }
