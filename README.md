@@ -206,6 +206,15 @@ public function all($entity = Entity::class);
  * @return mixed
  */
 public function scalar();
+
+/**
+ * Bind parameters and execute the statement.
+ *
+ * @throws DatabaseQueryFailed
+ *
+ * @return bool
+ */
+public function execute();
 ```
 
 ## Contribution
