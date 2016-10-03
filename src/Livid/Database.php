@@ -40,44 +40,37 @@ class Database
      *
      * @param string $sql
      *
+     * @throws DatabaseQueryFailed
+     *
      * @return int
      */
     public function execute($sql)
     {
-        return $this->query('exec', $sql);
+        $this->connect();
+
+        try {
+            return $this->database->exec($sql);
+        } catch (PDOException $exception) {
+            throw new DatabaseQueryFailed($exception->getMessage());
+        }
     }
 
     /**
      * Prepares an SQL statement on the database.
      *
      * @param string $sql
-     *
-     * @return \PDOStatement
-     */
-    public function prepare($sql, $parameters = [])
-    {
-        $statement = $this->query('prepare', $sql);
-        return new Query($statement, $parameters);
-    }
-
-    /**
-     * Query the database with a method and SQL.
-     *
-     * @param string $method
-     * @param string $sql
+     * @param mixed[] $parameters
      *
      * @throws DatabaseQueryFailed
      *
-     * @return mixed
+     * @return Query
      */
-    private function query($method, $sql)
+    public function prepare($sql, array $parameters = [])
     {
-        if (!$this->database) {
-            $this->connect();
-        }
+        $this->connect();
 
         try {
-            return $this->database->$method($sql);
+            return new Query($this->database->prepare($sql), $parameters);
         } catch (PDOException $exception) {
             throw new DatabaseQueryFailed($exception->getMessage());
         }
@@ -94,6 +87,10 @@ class Database
      */
     private function connect()
     {
+        if ($this->database) {
+            return;
+        }
+
         try {
             $this->database = new PDO(
                 $this->config->getDSN(),
