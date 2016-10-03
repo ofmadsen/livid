@@ -31,7 +31,7 @@ class Query
      * @param PDOStatement $statement
      * @param mixed[] $parameters
      */
-    public function __construct(PDOStatement $statement, $parameters)
+    public function __construct(PDOStatement $statement, array $parameters = [])
     {
         $this->statement = $statement;
         $this->parameters = $parameters;
@@ -88,15 +88,17 @@ class Query
      * Bind parameters and execute the statement.
      *
      * @throws DatabaseQueryFailed
+     *
+     * @return bool
      */
-    private function execute()
+    public function execute()
     {
         foreach ($this->parameters as $parameter => $value) {
             $this->statement->bindValue(":{$parameter}", $value);
         }
 
         try {
-            $this->statement->execute();
+            return $this->statement->execute();
         } catch (PDOException $exception) {
             throw new DatabaseQueryFailed($exception->getMessage());
         }
