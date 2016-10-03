@@ -95,12 +95,28 @@ class MapperTest extends TestCase
         $this->assertObjectHasAttribute('color', $entity);
     }
 
-    public function testSqlSyntaxFailureThrowException()
+    public function testExecutePreparedStatement()
+    {
+        $mapper = new HorseMapper();
+        $result = $mapper->executePrepared();
+
+        $this->assertTrue($result);
+    }
+
+    public function testSqlQuerySyntaxFailureThrowException()
     {
         $this->expectException(DatabaseQueryFailed::class);
 
         $mapper = new HorseMapper();
-        $mapper->sqlSyntaxFailure();
+        $mapper->sqlQuerySyntaxFailure();
+    }
+
+    public function testSqlExecuteSyntaxFailureThrowException()
+    {
+        $this->expectException(DatabaseQueryFailed::class);
+
+        $mapper = new HorseMapper();
+        $mapper->sqlExecuteSyntaxFailure();
     }
 
     public function testIllegalParameterThrowException()
