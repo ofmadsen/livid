@@ -74,8 +74,7 @@ class EntityFactory
      */
     private function storeEntityProperties()
     {
-        $entity = new $this->entityClass();
-        $class = new ReflectionClass($entity);
+        $class = new ReflectionClass($this->entityClass);
 
         foreach ($class->getProperties(ReflectionProperty::IS_PROTECTED) as $property) {
             $this->protectedEntityProperties[] = $property->getName();

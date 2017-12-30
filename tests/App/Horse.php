@@ -7,6 +7,12 @@ class Horse
     protected $stableId;
     private $name;
 
+    public function __construct($stableId, $name)
+    {
+        $this->stableId = $stableId;
+        $this->name = $name;
+    }
+
     public function getStableId()
     {
         return $this->stableId;
